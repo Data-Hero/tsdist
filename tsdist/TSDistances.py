@@ -1,0 +1,2 @@
+class TSDistances:
+    pass
