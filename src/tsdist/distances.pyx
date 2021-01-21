@@ -3,7 +3,7 @@ from libc.math cimport sqrt, pow
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cdef double euclidean_distance(double[:] x, double[:] y):
+cpdef double euclidean_distance(double[:] x, double[:] y):
     cdef int i, length
     cdef double result
     for i in range(len(x)):
@@ -12,7 +12,7 @@ cdef double euclidean_distance(double[:] x, double[:] y):
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cdef double manhattan_distance(double[:] x, double[:] y):
+cpdef double manhattan_distance(double[:] x, double[:] y):
     cdef int i, length
     cdef double result
     for i in range(len(x)):
@@ -21,7 +21,7 @@ cdef double manhattan_distance(double[:] x, double[:] y):
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cdef double minkowski_distance(double[:] x, double[:] y, int p):
+cpdef double minkowski_distance(double[:] x, double[:] y, int p):
     cdef int i, length
     cdef double result
     for i in range(len(x)):

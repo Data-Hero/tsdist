@@ -1,24 +1,56 @@
 import setuptools
-from Cython.Build import cythonize
+import os
+try:
+    from Cython.Build import cythonize
+except ImportError:
+    cythonize = None
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+
+# https://cython.readthedocs.io/en/latest/src/userguide/source_files_and_compilation.html#distributing-cython-modules
+def no_cythonize(extensions, **_ignore):
+    for extension in extensions:
+        sources = []
+        for sfile in extension.sources:
+            path, ext = os.path.splitext(sfile)
+            if ext in (".pyx", ".py"):
+                if extension.language == "c++":
+                    ext = ".cpp"
+                else:
+                    ext = ".c"
+                sfile = path + ext
+            sources.append(sfile)
+        extension.sources[:] = sources
+    return extensions
+
+extension = [
+    setuptools.Extension("src", ["src/tsdist/distances.pyx"])
+]
+
+CYTHONIZE = bool(int(os.getenv("CYTHONIZE", 0))) and cythonize is not None
+
+
+if CYTHONIZE:
+    compiler_directives = {"language_level": 3, "embedsignature": True}
+    extensions = cythonize(extension, compiler_directives=compiler_directives)
+else:
+    extensions = no_cythonize(extension)
+
+with open("requirements.txt") as fp:
+    install_requires = fp.read().strip().split("\n")
+
+
+with open("requirements-dev.txt") as fp:
+    dev_requires = fp.read().strip().split("\n")
+
+
 setuptools.setup(
-    name="tsdist",
-    version="0.1",
-    scripts=["tsdist"],
-    author="Bijan Riesenberg",
-    author_email="bijan.riesenberg@protonmail.com",
-    description="A port of the R package TSdist to python.",
-    long_description=long_description,
-    long_description_content_type="text/markdown",
-    url="https://github.com/Data-Hero/tsdist",
-    packages=setuptools.find_packages(),
-    classifiers=[
-        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
-        "Programming Language :: Python :: 3.8"
-        "Operating System :: OS Independent",
-    ],
-    ext_modules=cythonize("./tsdist/tsdist.pyx")
+    ext_modules=extensions,
+    install_requires=install_requires,
+    extras_require={
+        "dev": dev_requires,
+        "docs": ["sphinx", "sphinx-rtd-theme"]
+    },
 )
