@@ -21,4 +21,4 @@ clean:
 	find . -name __pycache__ -exec rm -r {} +
 
 uninstall:
-	pip uninstall cython-package-example
+	pip uninstall tsdist

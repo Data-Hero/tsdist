@@ -1,6 +1,6 @@
 import unittest
-from src.tsdist import distances
-
+from tsdist.distances import euclidean_distance
+import tsdist.distances as tsd
 
 class TestCase(unittest.TestCase):
     def __init__(self, *args, **kwargs):
