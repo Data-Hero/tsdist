@@ -3,9 +3,9 @@ from src.tsdist import distances
 
 class TSDistances:
     def __init__(self, x, y):
-        self._possible_distances = ["euclidean", "manhattan", "minkowski"]
+        self._possible_distances = ["euclidean", "manhattan", "minkowski", "lcss"]
         # "infnorm", "ccor", "sts", "dtw", "lb.keogh",
-        # "edr", "erp", "lcss", "fourier", "tquest", "dissim", "acf", "pacf", "ar.lpc.ceps",
+        # "edr", "erp", "fourier", "tquest", "dissim", "acf", "pacf", "ar.lpc.ceps",
         # "ar.mah", "ar.mah.statistic", "ar.mah.pvalue", "ar.pic", "cdm", "cid", "cor",
         # "cort", "int.per", "per", "mindist.sax", "ncd", "pred", "spec.glk", "spec.isd",
         # "spec.llr", "pdc", "frechet", "tam"]
