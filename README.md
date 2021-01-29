@@ -6,7 +6,7 @@ This is a port of the R package TSdist to python.
 - [X] EuclideanDistance
 - [X] ManhattanDistance
 - [X] MinkowskiDistance
-- [X] LCSSDistance (DP Algorithm)
+- [X] LCSSDistance (DP Algorithm with O(n^2) runtime)
 - ACFDistance
 - ARLPCCepsDistance
 - ARMahDistance
