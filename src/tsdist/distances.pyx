@@ -82,3 +82,36 @@ cpdef double lcss_distance(double[:] x, double[:] y, double epsilon):
                 cost_matrix[i,j] = fmax(cost_matrix[i-1,j], cost_matrix[i,j-1])
 
     return cost_matrix[t1,t2]
+
+
+
+
+cpdef double erp_distance(double[:] x, double[:] y, double g, unsigned int sigma):
+    """Computes the Edit Distance with Real Penalty between a pair of numeric time series.
+
+    TODO Long description
+
+    Args:
+        x (double[]): Numeric vector containing the first time series.
+        y (double[]): Numeric vector containing the second time series.
+        g (double): The reference value used to penalize gaps.
+        sigma (unsigned int): If desired, a Sakoe-Chiba windowing contraint can be added by specifying a positive 
+            integer representing the window size.
+
+    Returns:
+        double: Edit Distance with Real Penalty between x and y.
+    """
+    cdef int t1, t2
+    t1 = len(x)
+    t2 = len(y)
+    cost_matrix = np.zeros((t1+1,t2+1))
+    subcost = np.zeros((t1,t2))
+
+    # Calculate distances
+    for i in range(t1):
+        for j in range(t2):
+            subcost[i,j] = sqrt(pow(x[i]-y[i],2))
+
+
+
+    return 0.0
