@@ -1,12 +1,12 @@
 # tsdist
-This is a port of the R package TSdist to python.
+This is a port of the R package TSdist to cython.
 
 
 ## List of all metrics
 - [X] EuclideanDistance
 - [X] ManhattanDistance
 - [X] MinkowskiDistance
-- [X] LCSSDistance
+- [X] LCSSDistance (DP Algorithm with O(n^2) runtime)
 - ACFDistance
 - ARLPCCepsDistance
 - ARMahDistance
