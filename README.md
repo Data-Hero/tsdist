@@ -1,5 +1,5 @@
 # tsdist
-This is a port of the R package TSdist to cython.
+This is a port of the R package [TSdist](https://cran.r-project.org/web/packages/TSdist/index.html) to cython.
 
 
 ## List of all metrics
