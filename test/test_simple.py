@@ -4,7 +4,7 @@ import numpy as np
 pyximport.install(setup_args={"script_args": ["--force"]}, language_level=3)
 import unittest
 
-from src.tsdist.distances import euclidean_distance, lcss_distance
+from src.tsdist.distances import euclidean_distance, lcss_distance, erp_distance
 
 
 class TSDTest(unittest.TestCase):
@@ -41,6 +41,15 @@ class TSDTest(unittest.TestCase):
         print(lcss_distance(self.X0, self.Y0, 0.15))
         self.assertAlmostEqual(lcss_distance(self.X0, self.Y0, 0.15), 3, places=5)
         # self.assertAlmostEqual(lcss_distance(self.X4, self.Y4, 0.1), 5, places=5)
+
+    def testERP_distance1(self):
+        print("ERP distance 1")
+        print(erp_distance(self.X1, self.Y1, 0.001))
+        self.assertAlmostEqual(erp_distance(self.X1, self.Y1, 0.001), 0.1, places=5)
+        self.assertAlmostEqual(erp_distance(self.X1, self.Y1, 1), 0.1, places=5)
+        self.assertAlmostEqual(erp_distance(self.X1, self.Y1, 5), 0.1, places=5)
+
+
 
 
 if __name__ == "__main__":
