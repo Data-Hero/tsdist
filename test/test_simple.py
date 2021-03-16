@@ -5,7 +5,7 @@ pyximport.install(setup_args={"script_args": ["--force"]}, language_level=3)
 import unittest
 
 from src.tsdist.distances import euclidean_distance, lcss_distance, erp_distance
-
+from src.tsdist.parallel_distances import parallel_euclidean_distance
 
 class TSDTest(unittest.TestCase):
     def __init__(self, *args, **kwargs):

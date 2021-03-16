@@ -1,0 +1,1 @@
+cpdef double parallel_euclidean_distance(double[:] x, double[:] y)

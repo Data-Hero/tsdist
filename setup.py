@@ -26,7 +26,8 @@ def no_cythonize(extensions, **_ignore):
     return extensions
 
 extension = [
-    setuptools.Extension("src", ["src/tsdist/distances.pyx"])
+    setuptools.Extension( "src", ["src/tsdist/distances.pyx"]),
+    setuptools.Extension( "src", ["src/tsdist/parallel_distances.pyx"], extra_compile_args=['-fopenmp'], extra_link_args=['-fopenmp'],)
 ]
 
 CYTHONIZE = bool(int(os.getenv("CYTHONIZE", 0))) and cythonize is not None
