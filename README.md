@@ -7,6 +7,7 @@ This is a port of the R package [TSdist](https://cran.r-project.org/web/packages
 - [X] ManhattanDistance
 - [X] MinkowskiDistance
 - [X] LCSSDistance (DP Algorithm with O(n^2) runtime)
+- [X] ERPDistance
 - ACFDistance
 - ARLPCCepsDistance
 - ARMahDistance
@@ -19,7 +20,6 @@ This is a port of the R package [TSdist](https://cran.r-project.org/web/packages
 - DissimDistance
 - DTWDistance
 - EDRDistance
-- ERPDistance
 - FourierDistance
 - FrechetDistance
 - InfNormDistance
