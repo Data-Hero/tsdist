@@ -85,8 +85,6 @@ cpdef double lcss_distance(double[:] x, double[:] y, double epsilon):
     return cost_matrix[t1,t2]
 
 
-
-
 cpdef double erp_distance(double[:] x, double[:] y, double g):
     """Computes the Edit Distance with Real Penalty between a pair of numeric time series.
 
@@ -110,24 +108,19 @@ cpdef double erp_distance(double[:] x, double[:] y, double g):
     cdef double[:,:] dist_matrix = np.zeros((t1,t2))
 
     # Calculate distances
-    for i in range(0, t1, 1):
-        for j in range(0, t2, 1):
+    for i in range(0, t1-1, 1):
+        for j in range(0, t2-1, 1):
             dist_matrix[i,j] = sqrt(pow(x[i]-y[i],2))
-
 
     for i in range(1, t1, 1):
         dist1 = fabs(g-x[i-1])
         cost_matrix[i*t2] = dist1 + cost_matrix[(i-1)*t2]
 
-    print("allok")
-
-
     for j in range(1, t2, 1):
         dist2 = fabs(g-y[j-1])
         cost_matrix[j] = dist2 + cost_matrix[j-1]
 
-    print("allok")
-
+    #print(np.asarray(cost_matrix))
     for i in range(1, t1, 1):
         for j in range(1, t2, 1):
             dist1 = fabs(g-x[i-1])
@@ -140,3 +133,4 @@ cpdef double erp_distance(double[:] x, double[:] y, double g):
             ), dist12 + cost_matrix[(i-1) * t2 + (j - 1)])
 
     return cost_matrix[len(cost_matrix)-1]
+

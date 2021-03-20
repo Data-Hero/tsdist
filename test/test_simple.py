@@ -14,6 +14,7 @@ class TSDTest(unittest.TestCase):
         self.Y0 = np.array([1.1, 1.2, 1.4])
         self.X1 = np.array([1.0, -1.0, 1.0, -1.0, 0.0])
         self.Y1 = np.array([0.0, -1.0, 1.0, -1.0, 0.0])
+        self.Y12 = np.array([0.9, -1.0, 1.0, -1.0, 0.0])
         self.X2 = np.array([0.2, 0.5, 0.1, 0.8, 1.2, 1.5])
         self.Y2 = np.array([0.1, 0.4, 0.05, 0.81, 1.25, 1.45])
         self.X3 = np.repeat(1, 1000000)
@@ -43,13 +44,9 @@ class TSDTest(unittest.TestCase):
         # self.assertAlmostEqual(lcss_distance(self.X4, self.Y4, 0.1), 5, places=5)
 
     def testERP_distance1(self):
-        print("ERP distance 1")
-        print(erp_distance(self.X1, self.Y1, 0.001))
-        self.assertAlmostEqual(erp_distance(self.X1, self.Y1, 0.001), 0.1, places=5)
-        self.assertAlmostEqual(erp_distance(self.X1, self.Y1, 1), 0.1, places=5)
-        self.assertAlmostEqual(erp_distance(self.X1, self.Y1, 5), 0.1, places=5)
-
-
+        print(erp_distance(self.X1, self.Y12, 0.001))
+        self.assertAlmostEqual(erp_distance(self.X1, self.Y1, 0.001), 1, places=5)
+        self.assertAlmostEqual(erp_distance(self.X1, self.Y12, 0.1), 0.1, places=5)
 
 
 if __name__ == "__main__":
