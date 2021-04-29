@@ -50,3 +50,4 @@ This is a port of the R package [TSdist](https://cran.r-project.org/web/packages
 contains a few metrics like dynamic time warping
 - [pyts](https://pyts.readthedocs.io/en/stable/index.html) A second python package for time series analysis that 
 contains a dtw implementation
+- [sktime](https://www.sktime.org/en/latest/index.html) A scikit-learn compatible framework for time series analysis planning on extending the amount of metrics available in the future. currently implementing LCSS, MPDist, some DTW variations, Euclidean & ERP
