@@ -1,5 +1,4 @@
 cimport cython
-from cpython cimport array
 from libc.math cimport sqrt, pow, fmin, fmax, fabs
 import numpy as np
 cimport numpy as np
@@ -7,19 +6,19 @@ cimport numpy as np
 @cython.boundscheck(False)
 @cython.wraparound(False)
 cpdef double euclidean_distance(double[:] x, double[:] y):
-    cdef int i
+    cdef int k
     cdef double result = 0.0
-    for i in range(0, len(x), 1):
-        result += pow(x[i]-y[i],2)
+    for k in range(0, len(x), 1):
+        result += pow(x[k]-y[k],2)
     return sqrt(result)
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
 cpdef double manhattan_distance(double[:] x, double[:] y):
-    cdef int i
+    cdef int k
     cdef double result = 0.0
-    for i in range(0, len(x), 1):
-        result += fabs(x[i]-y[i])
+    for k in range(0, len(x), 1):
+        result += fabs(x[k]-y[k])
     return result
 
 @cython.boundscheck(False)
@@ -35,10 +34,10 @@ cpdef double minkowski_distance(double[:] x, double[:] y, int p):
     Returns:
         double: Longest Common Subsequence distance between x and y.
     """
-    cdef int i
+    cdef int k
     cdef double result = 0.0
-    for i in range(0, len(x), 1):
-        result += pow(x[i]-y[i],p)
+    for k in range(0, len(x), 1):
+        result += pow(x[k]-y[k],p)
     return pow(result, 1/p)
 
 
@@ -57,7 +56,7 @@ cpdef double lcss_distance(double[:] x, double[:] y, double epsilon):
     Returns:
         double: Longest Common Subsequence distance between x and y.
     """
-    cdef int i, j, t1, t2, max
+    cdef int k, l, t1, t2, max
     cdef dist = 0.0
     t1 = len(x)
     t2 = len(y)
@@ -66,25 +65,26 @@ cpdef double lcss_distance(double[:] x, double[:] y, double epsilon):
 
 
     # Calculate distances
-    for i in range(0, t1, 1):
-        for j in range(0, t2, 1):
-            dist = sqrt(pow(x[i]-y[i],2))
+    for k in range(0, t1, 1):
+        for l in range(0, t2, 1):
+            dist = sqrt(pow(x[k]-y[k],2))
             if dist > epsilon:
-                subcost[i*t1+j] = 1
+                subcost[k*t1+l] = 1
             else:
-                subcost[i*t2+j] = 0
+                subcost[k*t2+l] = 0
 
     # DP Algorithm
-    for i in range(1, t1+1,1):
-        for j in range(1, t2+1, 1):
-            if subcost[(i-1)*t1+(j-1)]==0.0:
-                cost_matrix[i,j] = cost_matrix[i-1,j-1]+1
+    for k in range(1, t1+1,1):
+        for l in range(1, t2+1, 1):
+            if subcost[(k-1)*t1+(l-1)]==0.0:
+                cost_matrix[k,l] = cost_matrix[k-1,l-1]+1
             else:
-                cost_matrix[i,j] = fmax(cost_matrix[i-1,j], cost_matrix[i,j-1])
+                cost_matrix[k,l] = fmax(cost_matrix[k-1,l], cost_matrix[k,l-1])
 
     return cost_matrix[t1,t2]
 
-
+@cython.boundscheck(False)
+@cython.wraparound(False)
 cpdef double erp_distance(double[:] x, double[:] y, double g):
     """Computes the Edit Distance with Real Penalty between a pair of numeric time series.
 
@@ -100,7 +100,7 @@ cpdef double erp_distance(double[:] x, double[:] y, double g):
     Returns:
         double: Edit Distance with Real Penalty between x and y.
     """
-    cdef int t1, t2, i, j
+    cdef int t1, t2, k, l
     cdef double dist1, dist2, dist12;
     t1 = len(x)+1
     t2 = len(y)+1
@@ -108,29 +108,69 @@ cpdef double erp_distance(double[:] x, double[:] y, double g):
     cdef double[:,:] dist_matrix = np.zeros((t1,t2))
 
     # Calculate distances
-    for i in range(0, t1-1, 1):
-        for j in range(0, t2-1, 1):
-            dist_matrix[i,j] = sqrt(pow(x[i]-y[i],2))
+    for k in range(0, t1 - 1, 1):
+        for l in range(0, t2 - 1, 1):
+            dist_matrix[k,l] = sqrt(pow(x[k]-y[k],2))
 
-    for i in range(1, t1, 1):
-        dist1 = fabs(g-x[i-1])
-        cost_matrix[i*t2] = dist1 + cost_matrix[(i-1)*t2]
+    for k in range(1, t1, 1):
+        dist1 = fabs(g-x[k-1])
+        cost_matrix[k*t2] = dist1 + cost_matrix[(k-1)*t2]
 
-    for j in range(1, t2, 1):
-        dist2 = fabs(g-y[j-1])
-        cost_matrix[j] = dist2 + cost_matrix[j-1]
+    for l in range(1, t2, 1):
+        dist2 = fabs(g-y[l-1])
+        cost_matrix[l] = dist2 + cost_matrix[l-1]
 
-    #print(np.asarray(cost_matrix))
-    for i in range(1, t1, 1):
-        for j in range(1, t2, 1):
-            dist1 = fabs(g-x[i-1])
-            dist2 = fabs(g-y[j-1])
-            dist12 = dist_matrix[i-1,j-1]
-            cost_matrix[(i*t2)+j] = fmin(
+    for k in range(1, t1, 1):
+        for l in range(1, t2, 1):
+            dist1 = fabs(g-x[k-1])
+            dist2 = fabs(g-y[l-1])
+            dist12 = dist_matrix[k-1,l-1]
+            cost_matrix[(k*t2)+l] = fmin(
                 fmin(
-                    dist1 + cost_matrix[(i-1) * t2 + j],
-                    dist2 + cost_matrix[i * t2 + (j - 1)]
-            ), dist12 + cost_matrix[(i-1) * t2 + (j - 1)])
+                    dist1 + cost_matrix[(k-1) * t2 + l],
+                    dist2 + cost_matrix[k * t2 + (l - 1)]
+            ), dist12 + cost_matrix[(k-1) * t2 + (l - 1)])
 
     return cost_matrix[len(cost_matrix)-1]
+
+
+cpdef double sts_distance(double[:] x, double[:] y):#, double[:] tx=None, double[:] ty=None):
+    """Computes the Short Time Series Distance between a pair of numeric time series.
+
+    The short time series distance between two series is designed specially for series with an equal but uneven sampling rate. 
+    However, it can also be used for time series with a constant sampling rate. It is calculated as follows
+
+    Args:
+        x (double[]): Numeric vector containing the first time series.
+        y (double[]): Numeric vector containing the second time series.
+        tx (double[]): If not constant, a numeric vector that specifies the sampling index of series x.
+        ty (double[]): If not constant, a numeric vector that specifies the sampling index of series y. 
+
+    Returns:
+        double: Short Time Series Distance between a pair of numeric time series.
+    """
+
+    cdef double[:] lx, ly, ltx, lty
+    tx = np.arange(1, len(x))
+    ty = tx
+    ltx = np.ones(len(tx)-1)
+    lty = ltx
+    #if tx is None:
+    #    tx = ty
+    #    ltx = np.ones(len(tx)-1)
+    #    lty = ltx
+    #if ty is None:
+    #    ty = tx
+    #    ltx = np.ones(len(tx)-1)
+    #    lty = ltx
+    #print(x[1])
+
+    # assert len(x) == len(y) & len(y) == len(tx) & len(tx) == len(y)
+    cdef double distance = 0.0
+    cdef int k
+    for k in range(1, len(x)-1, 1):
+        distance = distance + pow((x[k]-x[k-1])/(tx[k]-tx[k-1])-(y[k]-y[k-1])/(ty[k]-ty[k-1]), 2.0)
+
+    return distance
+
 

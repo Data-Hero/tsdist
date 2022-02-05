@@ -1,5 +1,6 @@
 import setuptools
 import os
+
 try:
     from Cython.Build import cythonize
 except ImportError:
@@ -25,13 +26,17 @@ def no_cythonize(extensions, **_ignore):
         extension.sources[:] = sources
     return extensions
 
+
 extension = [
-    setuptools.Extension( "src", ["src/tsdist/distances.pyx"]),
-    setuptools.Extension( "src", ["src/tsdist/parallel_distances.pyx"], extra_compile_args=['-fopenmp'], extra_link_args=['-fopenmp'],)
+    setuptools.Extension("src", ["src/tsdist/distances.pyx"],
+                         define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")]),
+    setuptools.Extension("src", ["src/tsdist/parallel_distances.pyx"],
+                         define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")],
+                         extra_compile_args=['-fopenmp'],
+                         extra_link_args=['-fopenmp'], )
 ]
 
 CYTHONIZE = bool(int(os.getenv("CYTHONIZE", 0))) and cythonize is not None
-
 
 if CYTHONIZE:
     compiler_directives = {"language_level": 3, "embedsignature": True}
@@ -42,10 +47,8 @@ else:
 with open("requirements.txt") as fp:
     install_requires = fp.read().strip().split("\n")
 
-
 with open("requirements-dev.txt") as fp:
     dev_requires = fp.read().strip().split("\n")
-
 
 setuptools.setup(
     ext_modules=extensions,
