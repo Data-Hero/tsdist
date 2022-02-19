@@ -1,4 +1,4 @@
-# tsdist
+# TSdist
 This is a port of the R package [TSdist](https://cran.r-project.org/web/packages/TSdist/index.html) to cython.
 
 
@@ -42,6 +42,10 @@ This is a port of the R package [TSdist](https://cran.r-project.org/web/packages
 - TAMDistance
 - TquestDistance
 - TSDatabaseDistances
+
+things to do afterwards:
+- parallelization
+- integrations
 
 ## Packages with similar content
 - [TSdist](https://cran.r-project.org/web/packages/TSdist/index.html): The original R package 
