@@ -8,6 +8,7 @@ This is a port of the R package [TSdist](https://cran.r-project.org/web/packages
 - [X] MinkowskiDistance
 - [X] LCSSDistance (DP Algorithm with O(n^2) runtime)
 - [X] ERPDistance
+- [X] STSDistance (Single-pass O(n) implementation from the paper, no sampling rate yet)
 - ACFDistance
 - ARLPCCepsDistance
 - ARMahDistance
@@ -38,7 +39,6 @@ This is a port of the R package [TSdist](https://cran.r-project.org/web/packages
 - SpecGLKDistance
 - SpecISDDistance
 - SpecLLRDistance
-- STSDistance
 - TAMDistance
 - TquestDistance
 - TSDatabaseDistances
