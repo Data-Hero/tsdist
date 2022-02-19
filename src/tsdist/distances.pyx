@@ -6,7 +6,7 @@ cimport numpy as np
 @cython.boundscheck(False)
 @cython.wraparound(False)
 cpdef double euclidean_distance(double[:] x, double[:] y):
-    cdef int k
+    cdef Py_ssize_t k
     cdef double result = 0.0
     for k in range(0, len(x), 1):
         result += pow(x[k]-y[k],2)
@@ -15,7 +15,7 @@ cpdef double euclidean_distance(double[:] x, double[:] y):
 @cython.boundscheck(False)
 @cython.wraparound(False)
 cpdef double manhattan_distance(double[:] x, double[:] y):
-    cdef int k
+    cdef Py_ssize_t k
     cdef double result = 0.0
     for k in range(0, len(x), 1):
         result += fabs(x[k]-y[k])
@@ -34,7 +34,7 @@ cpdef double minkowski_distance(double[:] x, double[:] y, int p):
     Returns:
         double: Longest Common Subsequence distance between x and y.
     """
-    cdef int k
+    cdef Py_ssize_t k
     cdef double result = 0.0
     for k in range(0, len(x), 1):
         result += pow(x[k]-y[k],p)
@@ -56,7 +56,7 @@ cpdef double lcss_distance(double[:] x, double[:] y, double epsilon):
     Returns:
         double: Longest Common Subsequence distance between x and y.
     """
-    cdef int k, l, t1, t2, max
+    cdef Py_ssize_t k, l, t1, t2, max
     cdef dist = 0.0
     t1 = len(x)
     t2 = len(y)
@@ -100,7 +100,7 @@ cpdef double erp_distance(double[:] x, double[:] y, double g):
     Returns:
         double: Edit Distance with Real Penalty between x and y.
     """
-    cdef int t1, t2, k, l
+    cdef Py_ssize_t t1, t2, k, l
     cdef double dist1, dist2, dist12;
     t1 = len(x)+1
     t2 = len(y)+1
@@ -167,10 +167,10 @@ cpdef double sts_distance(double[:] x, double[:] y):#, double[:] tx=None, double
 
     # assert len(x) == len(y) & len(y) == len(tx) & len(tx) == len(y)
     cdef double distance = 0.0
-    cdef int k
+    cdef Py_ssize_t k
     for k in range(1, len(x)-1, 1):
         distance = distance + pow((x[k]-x[k-1])/(tx[k]-tx[k-1])-(y[k]-y[k-1])/(ty[k]-ty[k-1]), 2.0)
 
-    return distance
+    return sqrt(distance)
 
 

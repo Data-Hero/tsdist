@@ -1,10 +1,19 @@
+import numpy
 import pyximport
 import numpy as np
 
-pyximport.install(setup_args={"script_args": ["--force"]}, language_level=3)
+pyximport.install(
+    setup_args={"script_args": ["--force"], "include_dirs": numpy.get_include()},
+    language_level=3,
+)
 import unittest
 
-from src.tsdist.distances import euclidean_distance, lcss_distance, erp_distance, sts_distance
+from src.tsdist.distances import (
+    euclidean_distance,
+    lcss_distance,
+    erp_distance,
+    sts_distance,
+)
 
 
 class TSDTest(unittest.TestCase):
@@ -32,7 +41,9 @@ class TSDTest(unittest.TestCase):
 
     def test_euclidean2(self):
         print(euclidean_distance(self.X2, self.Y2))
-        self.assertAlmostEqual(euclidean_distance(self.X2, self.Y2), 0.1661325, places=5)
+        self.assertAlmostEqual(
+            euclidean_distance(self.X2, self.Y2), 0.1661325, places=5
+        )
 
     def test_lcss4(self):
         print(lcss_distance(self.X0, self.Y0, 0.05))
