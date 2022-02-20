@@ -1,4 +1,4 @@
-# tsdist
+# TSdist
 This is a port of the R package [TSdist](https://cran.r-project.org/web/packages/TSdist/index.html) to cython.
 
 
@@ -8,6 +8,7 @@ This is a port of the R package [TSdist](https://cran.r-project.org/web/packages
 - [X] MinkowskiDistance
 - [X] LCSSDistance (DP Algorithm with O(n^2) runtime)
 - [X] ERPDistance
+- [X] STSDistance (single-pass O(n) implementation from Möller-Levet (2003), no sampling rate yet)
 - ACFDistance
 - ARLPCCepsDistance
 - ARMahDistance
@@ -38,10 +39,13 @@ This is a port of the R package [TSdist](https://cran.r-project.org/web/packages
 - SpecGLKDistance
 - SpecISDDistance
 - SpecLLRDistance
-- STSDistance
 - TAMDistance
 - TquestDistance
 - TSDatabaseDistances
+
+things to do afterwards:
+- parallelization
+- integrations
 
 ## Packages with similar content
 - [TSdist](https://cran.r-project.org/web/packages/TSdist/index.html): The original R package 
