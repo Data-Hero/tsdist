@@ -139,7 +139,7 @@ cpdef double sts_distance(double[:] x, double[:] y):#, double[:] tx=None, double
 
     The short time series distance between two series is designed specially for series with an equal but uneven sampling rate. 
     However, it can also be used for time series with a constant sampling rate. It is calculated as follows
-
+    $$\text{STS}= \sqrt(\sum((y_{k+1}-y_{k})/(tx_{k+1}-tx_{k})-(x_{k+1}-x_{k})/(ty_{k+1}-ty_{k}))^2))$$
     Args:
         x (double[]): Numeric vector containing the first time series.
         y (double[]): Numeric vector containing the second time series.
@@ -151,26 +151,48 @@ cpdef double sts_distance(double[:] x, double[:] y):#, double[:] tx=None, double
     """
 
     cdef double[:] lx, ly, ltx, lty
+    cdef double distance = 0.0
+    cdef Py_ssize_t k
+
     tx = np.arange(1, len(x))
     ty = tx
     ltx = np.ones(len(tx)-1)
     lty = ltx
-    #if tx is None:
-    #    tx = ty
-    #    ltx = np.ones(len(tx)-1)
-    #    lty = ltx
-    #if ty is None:
-    #    ty = tx
-    #    ltx = np.ones(len(tx)-1)
-    #    lty = ltx
-    #print(x[1])
 
-    # assert len(x) == len(y) & len(y) == len(tx) & len(tx) == len(y)
-    cdef double distance = 0.0
-    cdef Py_ssize_t k
     for k in range(1, len(x)-1, 1):
         distance = distance + pow((x[k]-x[k-1])/(tx[k]-tx[k-1])-(y[k]-y[k-1])/(ty[k]-ty[k-1]), 2.0)
 
     return sqrt(distance)
 
 
+cpdef double sts_distance(double[:] x, double[:] y, double[:] tx, double[:] ty):
+    """Computes the Short Time Series Distance between a pair of numeric time series.
+
+    The short time series distance between two series is designed specially for series with an equal but uneven sampling rate. 
+    However, it can also be used for time series with a constant sampling rate. It is calculated as follows
+    $$\text{STS}= \sqrt(\sum((y_{k+1}-y_{k})/(tx_{k+1}-tx_{k})-(x_{k+1}-x_{k})/(ty_{k+1}-ty_{k}))^2))$$
+    Args:
+        x (double[]): Numeric vector containing the first time series.
+        y (double[]): Numeric vector containing the second time series.
+        tx (double[]): If not constant, a numeric vector that specifies the sampling index of series x.
+        ty (double[]): If not constant, a numeric vector that specifies the sampling index of series y. 
+
+    Returns:
+        double: Short Time Series Distance between a pair of numeric time series.
+    """
+
+    cdef double[:] lx, ly, ltx, lty
+    if tx is None:
+        tx = ty
+        ltx = np.ones(len(tx)-1)
+        lty = ltx
+    if ty is None:
+        ty = tx
+        ltx = np.ones(len(tx)-1)
+        lty = ltx
+    cdef double distance = 0.0
+    cdef Py_ssize_t k
+    for k in range(1, len(x)-1, 1):
+        distance = distance + pow((x[k]-x[k-1])/(tx[k]-tx[k-1])-(y[k]-y[k-1])/(ty[k]-ty[k-1]), 2.0)
+
+    return sqrt(distance)

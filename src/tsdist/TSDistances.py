@@ -3,7 +3,13 @@ from src.tsdist import distances
 
 class TSDistances:
     def __init__(self, x, y):
-        self._possible_distances = ["euclidean", "manhattan", "minkowski", "lcss"]
+        self._possible_distances = [
+            "euclidean",
+            "manhattan",
+            "minkowski",
+            "lcss",
+            "sts",
+        ]
         # "infnorm", "ccor", "sts", "dtw", "lb.keogh",
         # "edr", "erp", "fourier", "tquest", "dissim", "acf", "pacf", "ar.lpc.ceps",
         # "ar.mah", "ar.mah.statistic", "ar.mah.pvalue", "ar.pic", "cdm", "cid", "cor",
@@ -32,4 +38,3 @@ def distance():
 if __name__ == "__main__":
     t = TSDistances()
     print(t.distance("euclidean"))
-
